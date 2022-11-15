@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "Map.c"
 // PNJ BOT
 void search(char objet){
     int xSize = 5;
@@ -14,9 +15,9 @@ void search(char objet){
     //TODO : Attention taille des tableaux a revoir
 
     char tab[5][5] = {{'x','x','x','x','x'},
-                      {'x',NULL,NULL,NULL,'x'},
-                      {'x','m','p',NULL,'x'},
-                      {'x',NULL,NULL,NULL,'x'},
+                      {'x',' ',' ',' ','x'},
+                      {'x','m','p',' ','x'},
+                      {'x',' ',' ',' ','x'},
                       {'x','x','x','x','x'},};
 
     for (int y = 0 ; y < ySize ; y++){
@@ -43,6 +44,19 @@ void search(char objet){
 void start(){
 }
 int main() {
+    char **cLaCarte = malloc(sizeof(char *) * 7);
+
+    for (int a = 0; a < 7; ++a) {
+        cLaCarte[a] = malloc(sizeof(char) * 5);
+    }
+
+    Map map = {1, 7, 5, 6, NULL};
+    cLaCarte = mapUn(map.id, map.longueur, map.hauteur, map.nbBombes);
+
+    map.map = cLaCarte;
+
+    afficherMap(map.map, map.longueur, map.hauteur);
+
     int choix = 0;
     printf("Veuillez choisir entre les different choix\n"
            "1-Demarrer \n"
