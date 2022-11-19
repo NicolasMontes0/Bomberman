@@ -12,6 +12,6 @@ struct Map {
     char** map;
 } typedef Map;
 
-void afficherMap(char **map, int longueur, int hauteur);
+void afficherMap(Map map);
 
 char **mapUn(int id, int longueur, int hauteur, int nbBombes);
