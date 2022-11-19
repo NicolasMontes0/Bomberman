@@ -42,18 +42,55 @@ void search(char objet){
 }
 
 void start(){
-    char **cLaCarte = malloc(sizeof(char *) * 7);
-
-    for (int a = 0; a < 7; ++a) {
-        cLaCarte[a] = malloc(sizeof(char) * 5);
-    }
-
     Map map = {1, 7, 5, 2, NULL};
-    cLaCarte = mapUn(map.id, map.longueur, map.hauteur, map.nbBombes);
+    map.map = mapUn(map.id, map.longueur, map.hauteur, map.nbBombes);
 
-    map.map = cLaCarte;
+    Map maps[] = {map};
+    bool selection[] = {false};
+    bool selectionEnd = false;
+    do{
+        int nbMap = strlen(maps);
+        for(int i=0 ; i < nbMap ; i++) {
+            printf("Map-%d:\n", i+1);
+            afficherMap(maps[i]);
+            if(selection[i] == true) {
+                printf("Selected\n\n");
+            } else {
+                printf("Not selected\n\n");
+            }
+        }
+        int choice = 0;
+        do {
+            printf("Veuillez selectionner la ou les carte(s) par leur numeros (Tapez 0 pour finir la selection):\n");
+            scanf("%d", &choice);
+        }while(choice > nbMap & choice < 0);
 
-    afficherMap(map);
+        if(choice == 0) {
+            int selected = 0;
+            for(int i=0 ; i < nbMap ; i++) {
+                if(selection[i] == true) {
+                    selected++;
+                }
+            }
+            if(selected == 0) {
+                printf("Veuillez selectionner au moins une map !\n");
+            }
+            else {
+                break;
+            }
+        }
+
+        if(selection[choice-1] == true){
+            selection[choice-1] = false;
+        }
+        else if(selection[choice-1] == false){
+            selection[choice-1] = true;
+        }
+
+        printf("\n");
+    }while(selectionEnd == false);
+
+
 }
 
 int main() {
@@ -72,10 +109,10 @@ int main() {
                 start();
                 break;
             case 2:
-                printf("Vous vous connecter au serveur...\n");
+                printf("Vous ouvrez un serveur...\n");
                 break;
             case 3:
-                printf("Vous ouvrez un serveur...\n");
+                printf("Vous vous connecter au serveur...\n");
                 break;
             default:
                 exit(EXIT_FAILURE);

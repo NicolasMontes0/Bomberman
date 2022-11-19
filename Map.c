@@ -18,7 +18,6 @@ void afficherMap(Map map) {
         }
         printf("\n");
     }
-    printf("\n");
 }
 
 char **mapUn(int id, int longueur, int hauteur, int nbBombes) {
