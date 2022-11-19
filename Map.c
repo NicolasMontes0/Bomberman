@@ -62,5 +62,3 @@ char **mapUn(int id, int longueur, int hauteur, int nbBombes) {
 }
 
 
-
-

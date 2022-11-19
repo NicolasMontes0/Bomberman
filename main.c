@@ -42,8 +42,6 @@ void search(char objet){
 }
 
 void start(){
-}
-int main() {
     char **cLaCarte = malloc(sizeof(char *) * 7);
 
     for (int a = 0; a < 7; ++a) {
@@ -56,26 +54,30 @@ int main() {
     map.map = cLaCarte;
 
     afficherMap(map.map, map.longueur, map.hauteur);
+}
+int main() {
+    int choix = 1;
+    while(choix > 0 && choix < 4) {
+        printf("Veuillez selectionner une action:\n"
+               "1-Demarrer \n"
+               "2-Demarrer le serveur\n"
+               "3-Rejoindre un serveur\n"
+               "Autre-Quitter le jeux\n");
+        scanf("%d", &choix);
 
-    int choix = 0;
-    printf("Veuillez choisir entre les different choix\n"
-           "1-Demarrer \n"
-           "2-Demarrer le serveur\n"
-           "3-Rejoindre un serveur\n"
-           "4-Quitter le jeux\n");
-    scanf("%d", &choix);
-
-    switch (choix) {
-        case 1:
-            printf("vous commencez une partie en solo\n");
-                search('m');
+        switch (choix) {
+            case 1:
+                printf("Vous commencez une partie en solo...\n");
+                start();
                 break;
-        case 2:
+            case 2:
+                printf("Vous vous connecter au serveur...\n");
                 break;
-        case 3:
+            case 3:
+                printf("Vous ouvrez un serveur...\n");
                 break;
-        case 4:
-            exit(EXIT_FAILURE);
-                break;
+            default:
+                exit(EXIT_FAILURE);
+        }
     }
 }
