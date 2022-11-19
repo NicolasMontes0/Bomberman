@@ -60,10 +60,8 @@ void start(){
             }
         }
         int choice = 0;
-        do {
-            printf("Veuillez selectionner la ou les carte(s) par leur numeros (Tapez 0 pour finir la selection):\n");
-            scanf("%d", &choice);
-        }while(choice > nbMap & choice < 0);
+        printf("Veuillez selectionner la ou les carte(s) par leur numeros (Tapez 0 pour finir la selection):\n");
+        scanf("%d", &choice);
 
         if(choice == 0) {
             int selected = 0;
@@ -76,14 +74,14 @@ void start(){
                 printf("Veuillez selectionner au moins une map !\n");
             }
             else {
-                break;
+                selectionEnd = true;
             }
         }
 
-        if(selection[choice-1] == true){
+        if(choice <= nbMap && selection[choice-1] == true){
             selection[choice-1] = false;
         }
-        else if(selection[choice-1] == false){
+        else if(choice <= nbMap && selection[choice-1] == false){
             selection[choice-1] = true;
         }
 
