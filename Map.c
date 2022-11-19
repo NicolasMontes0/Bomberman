@@ -10,13 +10,15 @@ const char murDestructible = 'm';
 const char perso = 'p';
 const char espace = ' ';
 
-void afficherMap(char **map, int longueur, int hauteur) {
-    for (int i = 0; i < hauteur; ++i) {
-        for (int j = 0; j < longueur; ++j) {
-            printf("%c", *(*(map + i) + j));
+void afficherMap(Map map) {
+    printf("%d\n%d %d\n", map.nbBombes,map.longueur,map.hauteur);
+    for (int i = 0; i < map.hauteur; ++i) {
+        for (int j = 0; j < map.longueur; ++j) {
+            printf("%c", *(*(map.map + i) + j));
         }
         printf("\n");
     }
+    printf("\n");
 }
 
 char **mapUn(int id, int longueur, int hauteur, int nbBombes) {
@@ -60,5 +62,3 @@ char **mapUn(int id, int longueur, int hauteur, int nbBombes) {
     }
     return carte;
 }
-
-
