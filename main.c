@@ -48,13 +48,14 @@ void start(){
         cLaCarte[a] = malloc(sizeof(char) * 5);
     }
 
-    Map map = {1, 7, 5, 6, NULL};
+    Map map = {1, 7, 5, 2, NULL};
     cLaCarte = mapUn(map.id, map.longueur, map.hauteur, map.nbBombes);
 
     map.map = cLaCarte;
 
-    afficherMap(map.map, map.longueur, map.hauteur);
+    afficherMap(map);
 }
+
 int main() {
     int choix = 1;
     while(choix > 0 && choix < 4) {
