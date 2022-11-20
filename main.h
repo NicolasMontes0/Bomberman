@@ -15,6 +15,7 @@ struct Map {
     int hauteur;
     int nbBombes;
     char** map;
+    int nbJoueurs;
 } typedef Map;
 
 struct Personnage {
@@ -23,18 +24,13 @@ struct Personnage {
     int posX;
     int posY;
     int nbDebombes;
+    bool mort;
 } typedef Personnage;
 
 void afficherMap(Map map);
 
 char **mapUn(int id, int longueur, int hauteur, int nbBombes);
 
-bool deplacementDroite(Personnage perso, Map map);
-
-bool deplacementGauche(Personnage perso, Map map);
-
-bool deplacementBas(Personnage perso, Map map);
-
-bool deplacementHaut(Personnage perso, Map map);
+void ia();
 
 void poseBombe(Personnage perso, Map map);

@@ -6,21 +6,18 @@
 
 const char murIndestructible = 'x';
 const char murDestructible = 'm';
-const char perso = 'p';
-const char espace = ' ';
+const char persoCar = 'p';
+const char espaceCar = ' ';
 
 void start() {
-    Map map = {1, 7, 5, 1, NULL};
+    Map map = {1, 7, 5, 1, NULL, 2};
     map.map = mapUn(map.id, map.longueur, map.hauteur, map.nbBombes);
 
-    Map map2 = {2, 7, 5, 2, NULL};
+    Map map2 = {2, 7, 5, 2, NULL, 2};
     map2.map = mapUn(map.id, map.longueur, map.hauteur, map.nbBombes);
 
-    Map map3 = {3, 7, 5, 3, NULL};
+    Map map3 = {3, 7, 5, 3, NULL, 2};
     map3.map = mapUn(map.id, map.longueur, map.hauteur, map.nbBombes);
-
-    Personnage Joueur1 = {'1', 1, 1, 1, 2};
-    Personnage Joueur2 = {'2', 2, map.hauteur - 2, map.longueur - 2, 1};
 
     Map maps[] = {map, map2, map3};
     size_t nbMap = sizeof(maps) / sizeof(Map);
@@ -77,10 +74,14 @@ void start() {
         }
     }
 
+    int tours = 0;
     int choice = 1;
     int lastMap = -1;
     bool win = true;
     char touche = '0';
+    Map currentMap = selectedMap[0];
+    Personnage *players = malloc(sizeof(Personnage));
+    int currentPlayer = 0;
     do {
         if (win == true) {
             printf("Veuillez selectionner une action:\n"
@@ -95,40 +96,103 @@ void start() {
             do {
                 randomMap = rand() % selected;
             } while (randomMap == lastMap && selected != 1);
-            Map currentMap = selectedMap[randomMap];
             lastMap = randomMap;
+            currentMap = selectedMap[randomMap];
+            players = realloc(players, sizeof(Personnage)*currentMap.nbJoueurs);
+            int nbJoueurs = 0;
+            for (int i = 0; i < currentMap.hauteur; ++i) {
+                for (int j = 0; j < currentMap.longueur; ++j) {
+                    if(currentMap.map[i][j] == persoCar) {
+                        nbJoueurs++;
+                        currentMap.map[i][j] = nbJoueurs+'0';
+                        Personnage player = {nbJoueurs+'0', nbJoueurs, j, i, currentMap.nbBombes, false};
+                        players[nbJoueurs-1] = player;
+                    }
+                }
+            }
 
             printf("La map tire au sort est:\n");
             afficherMap(currentMap);
             printf("\nLa partie commence !\n\n");
+            win = false;
         }
+        if (currentPlayer == 0) {
+            afficherMap(currentMap);
+            printf("Selectionner une action:\n z-Avancer vers le haut\n s-Avancer vers le bas \n q-Avancer vers la gauche \n d-Avancer vers la droite \n");
 
-        scanf("Deplacement 1er joueur : %c", &touche);
-        switch (touche) {
-            case 'd' :
-                if (deplacementDroite(Joueur1, map) == true) {
-                    afficherMap(map);
-                }
-                break;
-            case 'q' :
-                if (deplacementGauche(Joueur1, map) == true) {
-                    afficherMap(map);
-                }
-                break;
-            case 'z' :
-                if (deplacementHaut(Joueur1, map) == true) {
-                    afficherMap(map);
-                }
-                break;
-            case 's' :
-                if (deplacementBas(Joueur1, map) == true) {
-                    afficherMap(map);
-                }
-                break;
-            default:;
-                printf("%d %d\n", Joueur1.posY, Joueur1.posX);
-                printf("%c\n", map.map[1][1]);
-                break;
+            while(getchar() != '\n');
+            scanf("%c", &touche);
+            switch (touche) {
+                case 'd' :
+                    if (players[currentPlayer].posX == currentMap.longueur-1 && currentMap.map[players[currentPlayer].posY][0] == espaceCar){
+                        currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = espaceCar;
+                        players[currentPlayer].posX = 0;
+                        currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = players[currentPlayer].symbole;
+                    }
+                    else {
+                        if (currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX+1] == ' ') {
+                            currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = espaceCar;
+                            players[currentPlayer].posX++;
+                            currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = players[currentPlayer].symbole;
+                        }
+                    }
+                    break;
+                case 'q' :
+                    if (players[currentPlayer].posX == 0 && currentMap.map[players[currentPlayer].posY][currentMap.longueur-1] == espaceCar){
+                        currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = espaceCar;
+                        players[currentPlayer].posX = currentMap.longueur-1;
+                        currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = players[currentPlayer].symbole;
+                    }
+                    else {
+                        if (currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX-1] == ' ') {
+                            currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = espaceCar;
+                            players[currentPlayer].posX--;
+                            currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = players[currentPlayer].symbole;
+                        }
+                    }
+                    break;
+                case 'z' :
+                    if (players[currentPlayer].posY == 0 && currentMap.map[currentMap.hauteur-1][players[currentPlayer].posX] == espaceCar){
+                        currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = espaceCar;
+                        players[currentPlayer].posY = currentMap.hauteur-1;
+                        currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = players[currentPlayer].symbole;
+                    }
+                    else {
+                        if (currentMap.map[players[currentPlayer].posY-1][players[currentPlayer].posX] == ' ') {
+                            currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = espaceCar;
+                            players[currentPlayer].posY--;
+                            currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = players[currentPlayer].symbole;
+                        }
+                    }
+                    break;
+                case 's' :
+                    if (players[currentPlayer].posY == currentMap.hauteur-1 && currentMap.map[0][players[currentPlayer].posX] == espaceCar){
+                        currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = espaceCar;
+                        players[currentPlayer].posY = 0;
+                        currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = players[currentPlayer].symbole;
+                    }
+                    else {
+                        if (currentMap.map[players[currentPlayer].posY+1][players[currentPlayer].posX] == ' ') {
+                            currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = espaceCar;
+                            players[currentPlayer].posY++;
+                            currentMap.map[players[currentPlayer].posY][players[currentPlayer].posX] = players[currentPlayer].symbole;
+                        }
+                    }
+                    break;
+                case 'e' :
+
+                default:;
+                    printf("Mauvaise selection !!!\n");
+                    break;
+            }
+        }
+        else {
+            ia();
+            tours++;
+        }
+        currentPlayer++;
+        if(currentPlayer >= currentMap.nbJoueurs) {
+            currentPlayer = 0;
         }
     } while (choice != 0);
 }
@@ -164,7 +228,7 @@ void afficherMap(Map map) {
     printf("%d\n%d %d\n", map.nbBombes, map.longueur, map.hauteur);
     for (int i = 0; i < map.hauteur; ++i) {
         for (int j = 0; j < map.longueur; ++j) {
-            printf("%c", *(*(map.map + i) + j));
+            printf("%c", map.map[i][j]);
         }
         printf("\n");
     }
@@ -190,100 +254,38 @@ char **mapUn(int id, int longueur, int hauteur, int nbBombes) {
             } else if ((i == 1 && j == 1) ||
                        (i == hauteur - 2 && j == longueur - 2)) {
 
-                *(*(carte + i) + j) = perso;
+                *(*(carte + i) + j) = persoCar;
 
                 if (*(*(carte + i - 1) + j) != murIndestructible) {
-                    *(*(carte + i - 1) + j) = espace;
+                    *(*(carte + i - 1) + j) = espaceCar;
                 }
                 if (*(*(carte + i) + j - 1) != murIndestructible) {
-                    *(*(carte + i) + j - 1) = espace;
+                    *(*(carte + i) + j - 1) = espaceCar;
                 }
                 if (*(*(carte + i + 1) + j) != murIndestructible) {
-                    *(*(carte + i + 1) + j) = espace;
+                    *(*(carte + i + 1) + j) = espaceCar;
                 }
                 if (*(*(carte + i) + j + 1) != murIndestructible) {
-                    *(*(carte + i) + j + 1) = espace;
+                    *(*(carte + i) + j + 1) = espaceCar;
                 }
-            } else if (*(*(carte + i) + j) != espace) {
+            } else if (*(*(carte + i) + j) != espaceCar) {
                 *(*(carte + i) + j) = murDestructible;
             }
         }
     }
+    *(*(carte + 2) + 0) = espaceCar;
+    *(*(carte + 2) + longueur-1) = espaceCar;
+    *(*(carte + 0) + 1) = espaceCar;
+    *(*(carte + hauteur-1) + 1) = espaceCar;
     return carte;
 }
 
 // PNJ BOT
-void search(char objet) {
-    int xSize = 5;
-    int ySize = 5;
-    int yPlayerPos;
-    int xPlayerPos;
-    int playerFound = 0;
-    int xObjPos;
-    int yObjPos;
-    int objFound = 0;
+void ia() {
 
-    //TODO : Attention taille des tableaux a revoir
-
-    char tab[5][5] = {{'x', 'x', 'x', 'x', 'x'},
-                      {'x', ' ', ' ', ' ', 'x'},
-                      {'x', 'm', 'p', ' ', 'x'},
-                      {'x', ' ', ' ', ' ', 'x'},
-                      {'x', 'x', 'x', 'x', 'x'},};
-
-    for (int y = 0; y < ySize; y++) {
-        for (int x = 0; x < xSize; x++) {
-            if (tab[y][x] == 'p') {
-                yPlayerPos = y;
-                xPlayerPos = x;
-                playerFound = 1;
-                break;
-            }
-        }
-        if (playerFound == 1) {
-            break;
-        }
-    }
-    int i = 1;
-    while (objFound == 0) {
-        if (tab[yPlayerPos][i] == objet) {
-
-        }
-    }
-}
-
-bool deplacementDroite(Personnage perso, Map map) {
-    if (perso.posX + 1 == ' ') {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool deplacementGauche(Personnage perso, Map map) {
-    if (perso.posX - 1 == ' ') {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool deplacementBas(Personnage perso, Map map) {
-    if (perso.posY + 1 == ' ') {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool deplacementHaut(Personnage perso, Map map) {
-    if (perso.posY - 1 == ' ') {
-        return true;
-    } else {
-        return false;
-    }
 }
 
 void poseBombe(Personnage perso, Map map) {
     map.map[perso.posY][perso.posX] = 'x';
+
 }
