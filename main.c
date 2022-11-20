@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include "Personnage.h"
 #include "Map.c"
 // PNJ BOT
-void search(char objet){
+void search(char objet) {
     int xSize = 5;
     int ySize = 5;
     int yPlayerPos;
@@ -14,46 +17,51 @@ void search(char objet){
 
     //TODO : Attention taille des tableaux a revoir
 
-    char tab[5][5] = {{'x','x','x','x','x'},
-                      {'x',' ',' ',' ','x'},
-                      {'x','m','p',' ','x'},
-                      {'x',' ',' ',' ','x'},
-                      {'x','x','x','x','x'},};
+    char tab[5][5] = {{'x', 'x', 'x', 'x', 'x'},
+                      {'x', ' ', ' ', ' ', 'x'},
+                      {'x', 'm', 'p', ' ', 'x'},
+                      {'x', ' ', ' ', ' ', 'x'},
+                      {'x', 'x', 'x', 'x', 'x'},};
 
-    for (int y = 0 ; y < ySize ; y++){
-        for (int x = 0 ; x < xSize ; x++){
-            if (tab[y][x] == 'p'){
+    for (int y = 0; y < ySize; y++) {
+        for (int x = 0; x < xSize; x++) {
+            if (tab[y][x] == 'p') {
                 yPlayerPos = y;
                 xPlayerPos = x;
                 playerFound = 1;
                 break;
             }
         }
-        if (playerFound == 1){
+        if (playerFound == 1) {
             break;
         }
     }
     int i = 1;
-    while(objFound == 0){
-        if (tab[yPlayerPos][i] == objet ){
+    while (objFound == 0) {
+        if (tab[yPlayerPos][i] == objet) {
 
         }
     }
 }
 
-void start(){
+void start() {
+
     Map map = {1, 7, 5, 2, NULL};
+
+    Personnage Joueur1 = { 1, 1, 2};
+    Personnage Joueur2 = {map.hauteur - 2, map.longueur - 2, 1};
+
     map.map = mapUn(map.id, map.longueur, map.hauteur, map.nbBombes);
 
     Map maps[] = {map};
     bool selection[] = {false};
     bool selectionEnd = false;
-    do{
-        int nbMap = strlen(maps);
-        for(int i=0 ; i < nbMap ; i++) {
-            printf("Map-%d:\n", i+1);
+    do {
+        size_t nbMap = sizeof(maps) / sizeof(Map);
+        for (int i = 0; i < nbMap; i++) {
+            printf("Map-%d:\n", i + 1);
             afficherMap(maps[i]);
-            if(selection[i] == true) {
+            if (selection[i] == true) {
                 printf("Selected\n\n");
             } else {
                 printf("Not selected\n\n");
@@ -63,37 +71,33 @@ void start(){
         printf("Veuillez selectionner la ou les carte(s) par leur numeros (Tapez 0 pour finir la selection):\n");
         scanf("%d", &choice);
 
-        if(choice == 0) {
+        if (choice == 0) {
             int selected = 0;
-            for(int i=0 ; i < nbMap ; i++) {
-                if(selection[i] == true) {
+            for (int i = 0; i < nbMap; i++) {
+                if (selection[i] == true) {
                     selected++;
                 }
             }
-            if(selected == 0) {
+            if (selected == 0) {
                 printf("Veuillez selectionner au moins une map !\n");
-            }
-            else {
+            } else {
                 selectionEnd = true;
             }
         }
 
-        if(choice <= nbMap && selection[choice-1] == true){
-            selection[choice-1] = false;
-        }
-        else if(choice <= nbMap && selection[choice-1] == false){
-            selection[choice-1] = true;
+        if (choice <= nbMap && selection[choice - 1] == true) {
+            selection[choice - 1] = false;
+        } else if (choice <= nbMap && selection[choice - 1] == false) {
+            selection[choice - 1] = true;
         }
 
         printf("\n");
-    }while(selectionEnd == false);
-
-
+    } while (selectionEnd == false);
 }
 
 int main() {
     int choix = 1;
-    while(choix > 0 && choix < 4) {
+    while (choix > 0 && choix < 4) {
         printf("Veuillez selectionner une action:\n"
                "1-Demarrer \n"
                "2-Demarrer le serveur\n"
