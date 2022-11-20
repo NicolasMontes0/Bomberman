@@ -105,7 +105,8 @@ void start() {
                     if(currentMap.map[i][j] == persoCar) {
                         nbJoueurs++;
                         currentMap.map[i][j] = nbJoueurs+'0';
-                        Personnage player = {nbJoueurs+'0', nbJoueurs, j, i, currentMap.nbBombes, false};
+                        Personnage player = {nbJoueurs+'0', nbJoueurs, j, i, currentMap.nbBombes,
+                                             NULL, 2, false, false, 2, false, false};
                         players[nbJoueurs-1] = player;
                     }
                 }
@@ -179,8 +180,8 @@ void start() {
                         }
                     }
                     break;
-                case 'e' :
-
+                case 'a' :
+                    printf("je ne fait rien !");
                 default:;
                     printf("Mauvaise selection !!!\n");
                     break;
@@ -285,7 +286,23 @@ void ia() {
 
 }
 
-void poseBombe(Personnage perso, Map map) {
-    map.map[perso.posY][perso.posX] = 'x';
+void poseBombe(Personnage personnage, Map map) {
+    if(personnage.nbDebombes > 0){
+        personnage.bombe->timer = 4;
+        personnage.bombe->bPosX = personnage.posX;
+        personnage.bombe->bPosY = personnage.posY;
+        map.map[personnage.posY][personnage.posX] = '0';
+    }
+}
 
+void explosionBombe(Personnage personnage, Map map){
+
+}
+
+void bombUp(Personnage personnage){
+    personnage.nbDebombes+1;
+}
+
+void bombDown(Personnage personnage){
+    personnage.nbDebombes-1;
 }

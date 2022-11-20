@@ -18,13 +18,26 @@ struct Map {
     int nbJoueurs;
 } typedef Map;
 
+struct Bombe{
+    int timer;
+    int portee;
+    int bPosX;
+    int bPosY;
+}typedef Bombe;
+
 struct Personnage {
     char symbole;
     int id;
     int posX;
     int posY;
     int nbDebombes;
-    bool mort;
+    Bombe *bombe;
+    int portee;
+    bool invincibilite;
+    bool coeur;
+    int pdv;
+    bool passeBombe;
+    bool bombKick;
 } typedef Personnage;
 
 void afficherMap(Map map);
@@ -33,4 +46,10 @@ char **mapUn(int id, int longueur, int hauteur, int nbBombes);
 
 void ia();
 
-void poseBombe(Personnage perso, Map map);
+void poseBombe(Personnage personnage, Map map);
+
+void explosionBombe(Personnage personnage, Map map);
+
+void bombUp(Personnage personnage);
+
+void bombDown(Personnage personnage);
