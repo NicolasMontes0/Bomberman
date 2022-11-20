@@ -3,4 +3,13 @@ project(Bomberman C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(Bomberman main.c)
+set(PROJECT_HEADERS
+        main.h
+        )
+set(PROJECT_SOURCES
+        main.c
+        )
+
+add_executable(untitled1 ${PROJECT_SOURCES} ${PROJECT_HEADERS})
+
+add_executable(Bomberman ${PROJECT_SOURCES} ${PROJECT_HEADERS} main.h)

@@ -116,6 +116,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named untitled1
+
+# Build rule for target.
+untitled1: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 untitled1
+.PHONY : untitled1
+
+# fast build rule for target.
+untitled1/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled1.dir\build.make CMakeFiles/untitled1.dir/build
+.PHONY : untitled1/fast
+
+#=============================================================================
 # Target rules for targets named Bomberman
 
 # Build rule for target.
@@ -133,6 +146,7 @@ main.obj: main.c.obj
 
 # target to build an object file
 main.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled1.dir\build.make CMakeFiles/untitled1.dir/main.c.obj
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Bomberman.dir\build.make CMakeFiles/Bomberman.dir/main.c.obj
 .PHONY : main.c.obj
 
@@ -141,6 +155,7 @@ main.i: main.c.i
 
 # target to preprocess a source file
 main.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled1.dir\build.make CMakeFiles/untitled1.dir/main.c.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Bomberman.dir\build.make CMakeFiles/Bomberman.dir/main.c.i
 .PHONY : main.c.i
 
@@ -149,6 +164,7 @@ main.s: main.c.s
 
 # target to generate assembly for a file
 main.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\untitled1.dir\build.make CMakeFiles/untitled1.dir/main.c.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Bomberman.dir\build.make CMakeFiles/Bomberman.dir/main.c.s
 .PHONY : main.c.s
 
@@ -161,6 +177,7 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... Bomberman
+	@echo ... untitled1
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

@@ -15,7 +15,8 @@
 					"source" : ".",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -30,7 +31,8 @@
 					"name" : "Bomberman",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -39,8 +41,15 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "Bomberman::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Bomberman-Debug-0adb91d5a1197b3358c4.json",
+					"jsonFile" : "target-Bomberman-Debug-cbfbe857085796c83838.json",
 					"name" : "Bomberman",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "untitled1::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-untitled1-Debug-dd2435b546406699e7b0.json",
+					"name" : "untitled1",
 					"projectIndex" : 0
 				}
 			]
