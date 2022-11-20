@@ -114,28 +114,30 @@ void start() {
         }
     }
 
-    bool win = false;
     int choice = 1;
     int lastMap = -1;
     do{
         int randomMap = 0;
         do{
             randomMap = rand()%selected;
-        } while (randomMap == lastMap || selected == 1);
+        } while (randomMap == lastMap && selected != 1);
         Map currentMap = selectedMap[randomMap];
         lastMap = randomMap;
+
+        printf("La map tire au sort est:");
         afficherMap(currentMap);
 
-        win = true;
+        bool win = false;
+        do{
+
+            win = true;
+        } while(win == false);
+
         printf("Veuillez selectionner une action:\n"
                "0-Revinir au menu principal \n"
                "Autre-Commencer une nouvelle map\n");
         scanf("%d", &choice);
-
-        if(choice != 0) {
-            win = false;
-        }
-    } while (win == false);
+    } while (choice != 0);
 }
 
 int main() {
