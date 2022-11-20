@@ -47,18 +47,28 @@ void search(char objet) {
 
 void start() {
 
-    Map map = {1, 7, 5, 2, NULL};
-
-    Personnage Joueur1 = {1, 1, 2};
-    Personnage Joueur2 = {map.hauteur - 2, map.longueur - 2, 1};
-
+    Map map = {1, 7, 5, 1, NULL};
     map.map = mapUn(map.id, map.longueur, map.hauteur, map.nbBombes);
 
-    Map maps[] = {map};
-    bool selection[] = {false};
+    Map map2 = {2, 7, 5, 2, NULL};
+    map2.map = mapUn(map.id, map.longueur, map.hauteur, map.nbBombes);
+
+    Map map3 = {3, 7, 5, 3, NULL};
+    map3.map = mapUn(map.id, map.longueur, map.hauteur, map.nbBombes);
+
+    Personnage Joueur1 = {1, 1, 2};
+    Personnage Joueur2 = {map.hauteur - 2, map.longueur - 2, 2};
+
+    Map maps[] = {map, map2, map3};
+    size_t nbMap = sizeof(maps) / sizeof(Map);
+    bool selection[nbMap];
+
+    for(int i=0 ; i < nbMap ; i++) {
+        selection[i] = false;
+    }
     bool selectionEnd = false;
+    int selected = 0;
     do {
-        size_t nbMap = sizeof(maps) / sizeof(Map);
         for (int i = 0; i < nbMap; i++) {
             printf("Map-%d:\n", i + 1);
             afficherMap(maps[i]);
@@ -73,7 +83,7 @@ void start() {
         scanf("%d", &choice);
 
         if (choice == 0) {
-            int selected = 0;
+            selected = 0;
             for (int i = 0; i < nbMap; i++) {
                 if (selection[i] == true) {
                     selected++;
@@ -94,6 +104,38 @@ void start() {
 
         printf("\n");
     } while (selectionEnd == false);
+
+    Map selectedMap[selected];
+    int index = 0;
+    for (int i = 0 ; i < nbMap ; i++) {
+        if (selection[i] == true) {
+            selectedMap[index] = maps[i];
+            index++;
+        }
+    }
+
+    bool win = false;
+    int choice = 1;
+    int lastMap = -1;
+    do{
+        int randomMap = 0;
+        do{
+            randomMap = rand()%selected;
+        } while (randomMap == lastMap || selected == 1);
+        Map currentMap = selectedMap[randomMap];
+        lastMap = randomMap;
+        afficherMap(currentMap);
+
+        win = true;
+        printf("Veuillez selectionner une action:\n"
+               "0-Revinir au menu principal \n"
+               "Autre-Commencer une nouvelle map\n");
+        scanf("%d", &choice);
+
+        if(choice != 0) {
+            win = false;
+        }
+    } while (win == false);
 }
 
 int main() {
